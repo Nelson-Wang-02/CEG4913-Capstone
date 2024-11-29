@@ -1,0 +1,44 @@
+/* General Styling */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+}
+
+/* Container for the animation */
+.container-hat-logo {
+    position: relative;
+    width: 10px; /* Width of the container */
+    height: 10px; /* Height of the container */
+}
+
+/* The wizard hat */
+.hat {
+    position: absolute;
+    top: calc(50% - 40px); /* Adjusted starting position (end position - hover offset) */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; /* Size of the hat */
+    z-index: 10; /* Ensure the hat is on top */
+    transition: transform 0.4s ease-in-out, top 0.4s ease-in-out; /* Smooth animation */
+}
+
+/* The dumbbell */
+.dumbbell {
+    position: absolute;
+    top: 50%; /* Centered vertically */
+    left: 50%; /* Centered horizontally */
+    transform: translate(-50%, -50%);
+    width: 100%; /* Size of the dumbbell */
+    opacity: 1; /* Always visible, initially covered by the hat */
+}
+
+/* Hover effect */
+.container:hover .hat {
+    top: calc(50% - 80px); /* Moves the hat higher (40px from its initial position) */
+}

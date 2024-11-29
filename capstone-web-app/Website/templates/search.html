@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+
+
+<style>
+
+    h3 {
+        margin-top: 20px; /* Adjust the value to your desired spacing */
+    }
+
+    .exercise-result {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      padding: 2rem;
+      background-color: #2e2e2e;
+    }
+
+    .card {
+      background-color: #333333;
+      border-radius: 8px;
+      overflow: hidden;
+      width: 250px; 
+      margin: 1rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.05); 
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+    }
+
+    .card-body {
+      padding: 1rem;
+      color: #e0e0e0; 
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #fbc02d; 
+    }
+
+    .card-text {
+      margin: 0.5rem 0 0;
+    }
+    .btn-custom {
+      background-color: #8B008B; 
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-custom:hover {
+      background-color: #6A006A;
+    }
+
+    .btn-custom:focus {
+      outline: none;
+      box-shadow: 0 0 4px #6A006A;
+    }
+
+</style>
+<form method="POST" style="margin-bottom: 2rem;">
+    <h3 style="margin-top: 20px; color: #FFFFFF" align="center">Exercise Search</h3>
+    <div class="form-group">
+        <label for="exerciseName">Exercise name</label>
+        <input type="text" class="form-control" id="exerciseName" name="exerciseName" placeholder="Enter an exercise name"/>
+    </div>
+    <div class="form-group">
+      <label for="intesitylvl">Intensity level</label>
+      <input type="text" class="form-control" id="intesitylvl" name="intesitylvl" placeholder="Enter an intensity level"/>
+  </div>
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+{% if exercises %}
+<div class="exercise-result">
+  {% for exercise in exercises %}
+    <div class="card">
+      <img src="{{ url_for('static', filename='images/' + exercise.name|replace(' ', '_')|lower + '.png') }}" alt="{{ exercise.name }}">
+      <div class="card-body">
+        <h3 class="card-title">{{ exercise.name }}</h3>
+        <p class="card-text">{{ exercise.description }}</p>
+        <form action="/exercise" method="POST">
+          <input type="hidden" name="exercise_name" value="{{ exercise.name }}">
+          <button type="submit" class="btn-custom">Launch Exercise</button>
+        </form>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% else %}
+  {% if display_results %} 
+    <p>No results found.</p>
+  {% endif %}
+{% endif %}
+{% endblock %}

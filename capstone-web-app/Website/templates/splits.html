@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Split
+{% endblock %}
+{% block content %}
+
+<style>
+  h1 {
+      margin-top: 20px; /* Adjust the value to your desired spacing */
+  }
+</style>
+
+  <h1 style="margin-top: 20px">Create Your Workout Split</h1>
+
+  <!-- Main container -->
+  <div class="split-container">
+    
+    <!-- Left side: Exercises -->
+  <section class="exercises">
+    <h2>Exercises</h2>
+    <div class="exercise" draggable="true" ondragstart="drag(event)" id="shoulder_press">
+      <img src="{{ url_for('static', filename='images/shoulder_press.png') }}" alt="Shoulder Press" class="exercise-img">
+      <div class="exercise-info">
+        <h3>Shoulder Press</h3>
+      </div>
+    </div>
+    <div class="exercise" draggable="true" ondragstart="drag(event)" id="chest_press">
+      <img src="{{ url_for('static', filename='images/chest_press.png') }}" alt="Chest Press" class="exercise-img">
+      <div class="exercise-info">
+        <h3>Chest Press</h3>
+      </div>
+    </div>
+    <div class="exercise" draggable="true" ondragstart="drag(event)" id="goblet_squat">
+      <img src="{{ url_for('static', filename='images/goblet_squat.png') }}" alt="Goblet Squat" class="exercise-img">
+      <div class="exercise-info">
+        <h3>Goblet Squat</h3>
+      </div>
+    </div>
+    <div class="exercise" draggable="true" ondragstart="drag(event)" id="lateral_raise">
+      <img src="{{ url_for('static', filename='images/lateral_raise.png') }}" alt="Lateral Raise" class="exercise-img">
+      <div class="exercise-info">
+        <h3>Lateral Raise</h3>
+      </div>
+    </div>
+  </section>
+
+    <!-- Right side: Days of the week -->
+    <section class="split-grid">
+      <div class="grid-container">
+        {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+        <div class="grid-item" ondrop="drop(event)" ondragover="allowDrop(event)">
+          <h4>{{ day }}</h4>
+          <div class="exercise-list" id="{{ day }}-list">
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Buttons -->
+  <div class="button-container">
+    <button onclick="resetGrid()" class="btn-yellow">Reset Grid</button>
+    <button onclick="submitSplit()" class="btn-yellow">Create Split</button>
+  </div>
+
+  <!-- Add custom JavaScript for drag and drop functionality -->
+  <script>
+
+    function resetGrid() {
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    days.forEach(function(day) {
+        const exerciseList = document.getElementById(day + '-list');
+        exerciseList.innerHTML = '';
+    });
+    }
+
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev) {
+      ev.preventDefault();
+      ev.stopPropagation(); 
+
+      var exerciseList = ev.target.querySelector('.exercise-list') || ev.target.closest('.exercise-list');
+
+      if (!exerciseList) {
+          console.log('Drop target is not a valid exercise-list.');
+          return;
+      }
+
+      var data = ev.dataTransfer.getData("text");
+      var exercise = document.getElementById(data).cloneNode(true);
+      exercise.setAttribute("draggable", "false");
+
+      var exerciseWrapper = document.createElement('div');
+      exerciseWrapper.className = 'exercise-wrapper';
+      exerciseWrapper.appendChild(exercise);
+
+      var garbageIcon = document.createElement('span');
+      garbageIcon.innerHTML = '🗑️';
+      garbageIcon.className = 'garbage-icon';
+      garbageIcon.onclick = function() {
+          exerciseWrapper.remove();
+      };
+
+      exerciseWrapper.appendChild(garbageIcon);
+      exerciseList.appendChild(exerciseWrapper);
+  }
+
+    function submitSplit() {
+      const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      let splitData = {};
+      days.forEach(function(day) {
+          let exercises = [];
+          const exerciseList = document.getElementById(day + '-list').getElementsByClassName('exercise-info');
+          for (let i = 0; i < exerciseList.length; i++) {
+              exercises.push(exerciseList[i].innerText.trim());
+          }
+          splitData[day] = exercises;
+      });
+
+      fetch('/create_splits', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(splitData),
+      }).then(response => {
+          if (response.ok) {
+              alert('Split created successfully!');
+              window.location.href = '/splits';
+          } else {
+              alert('Error creating split.');
+          }
+      });
+  }
+  </script>
+
+<style>
+  body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.925rem;
+    background-color: #1e1e1e; /* Very dark grey background */
+    color: #e0e0e0; /* Light grey text color */
+  }
+
+  h1 {
+    color: #e0e0e0; /* Light grey text color for headings */
+  }
+
+  h2 {
+    color: #e0e0e0; /* Light grey text color for subheadings */
+  }
+
+  h3 {
+    color: #e0e0e0; /* Light grey text color for exercise titles */
+  }
+
+  h4 {
+    color: #e0e0e0; /* Light grey text color for days of the week */
+  }
+
+  .split-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .exercises {
+    width: 30%;
+    padding: 10px;
+    border: 1px solid #ffd54f;
+    background-color: #333333;
+  }
+
+  .split-grid {
+    width: 60%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .grid-item {
+    padding: 10px;
+    border: 1px solid #ffd54f;
+    min-height: 100px;
+    background-color: #333333;
+  }
+
+  .exercise {
+    display: flex;
+    margin: 0; 
+    background-color: #333333;
+    border: 1px solid #ffd54f;
+    padding: 10px; 
+    height: 40px; 
+    align-items: center; 
+  }
+
+  .exercise-img {
+    width: 30px; 
+    height: 30px; 
+    margin-right: 10px;
+  }
+
+  .exercise-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .garbage-icon {
+    cursor: pointer;
+    font-size: 18px;
+    margin-left: 10px;
+  }
+
+  .button-container {
+    margin-top: 20px;
+  }
+
+  .btn-yellow {
+    background-color: #ffd54f;
+    color: #333333;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .btn-yellow:hover {
+    background-color: #ffca28;
+  }
+</style>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+Flask==3.1.0
+Flask_Login==0.6.3
+flask_sqlalchemy==3.1.1
+imageio==2.35.1
+joblib==1.4.2
+matplotlib==3.7.1
+mysql_connector_repackaged==0.3.1
+numpy==1.24.3
+Requests==2.32.3
+scipy==1.14.1
+SQLAlchemy==2.0.27
+SQLAlchemy_Utils==0.41.1

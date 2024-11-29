@@ -1,0 +1,71 @@
+
+{% extends "base.html" %} 
+{% block content %}
+
+
+<style>
+    h1 {
+        margin-top: 20px; /* Adjust the value to your desired spacing */
+        text-align: left;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+        width: 100%; /* Ensure elements align properly */
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input[type="range"] {
+        width: 300px; /* Reduce slider size */
+    }
+
+    button {
+        align-self: flex-start;
+    }
+</style>
+
+<h1><strong>{{ exercise_name }}</strong></h1>
+
+<form action="/start" method="POST">
+    <input type="hidden" name="exercise_name" value="{{ exercise_name }}">
+
+    <div class="form-group">
+        <label for="delay">Delay (seconds): <span id="delayValue">3</span></label>
+        <input type="range" id="delay" name="delay" class="form-control-range" min="3" max="60" value="0" oninput="updateDelay(this.value)">
+    </div>
+
+    <div class="form-group">
+        <label for="duration">Time Duration (seconds): <span id="durationValue">30</span></label>
+        <input type="range" id="duration" name="duration" class="form-control-range" min="1" max="300" value="30" oninput="updateDuration(this.value)">
+    </div>
+
+    <div class="form-group">
+        <label for="animate">Animate:</label>
+        <input type="checkbox" id="animate" name="animate">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Start exercise</button>
+</form>
+
+<script>
+    function updateDelay(value) {
+        document.getElementById('delayValue').innerText = value;
+    }
+
+    function updateDuration(value) {
+        document.getElementById('durationValue').innerText = value;
+    }
+</script>
+
+
+{% endblock %}

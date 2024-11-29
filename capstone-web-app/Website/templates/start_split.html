@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<body>
+    {% if rest_flag %}
+        <h1>Rest day!</h1>
+    {% else %}
+        <h1>Launching Split</h1>
+    {% endif %}
+</body>
+{% endblock %}

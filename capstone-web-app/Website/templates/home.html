@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<style>
+  h1 {
+      margin-top: 20px; /* Adjust the value to your desired spacing */
+  }
+</style>
+
+  <h1 style="margin-top: 20px; color: #FFFFFF">EXERCISES</h1>
+
+  <!-- Exercises Section -->
+  <section class="exercises">
+    <div class="exercise">
+      <img src="{{ url_for('static', filename='images/shoulder_press.png') }}" alt="Shoulder Press" class="exercise-img">
+      <div class="exercise-info">
+        <h3>Shoulder Press</h3>
+        <p>Improve your shoulder strength and stability with this classic exercise.</p>
+      </div>
+    </div>
+    <div class="exercise">
+      <img src="{{ url_for('static', filename='images/chest_press.png') }}" alt="Chest Press" class="exercise-img">
+      <div class="exercise-info">
+        <h3>Chest Press</h3>
+        <p>Enhance your chest muscles and upper body strength with this effective move.</p>
+      </div>
+    </div>
+    <div class="exercise">
+      <img src="{{ url_for('static', filename='images/goblet_squat.png') }}" alt="Goblet Squat" class="exercise-img">
+      <div class="exercise-info">
+        <h3>Goblet Squat</h3>
+        <p>Build lower body strength and improve your squat form with this essential exercise.</p>
+      </div>
+    </div>
+    <div class="exercise">
+      <img src="{{ url_for('static', filename='images/lateral_raise.png') }}" alt="Lateral Raise" class="exercise-img">
+      <div class="exercise-info">
+        <h3>Lateral Raise</h3>
+        <p>Target your shoulder muscles and increase shoulder definition with this isolation exercise.</p>
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+    h1 {
+        margin-top: 20px; /* Adjust the value to your desired spacing */
+    }
+    /* Add the workout split and card CSS here */
+    .workout-split {
+        padding: 20px;
+        background-color: #333333; /* Changed to grey */
+        border-radius: 10px;
+        margin-top: 20px;
+        text-align: center;
+    }
+    .workout-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+    .workout-card {
+        background-color: #444444; /* Changed to a darker grey for the cards */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        transition: transform 0.2s;
+    }
+    .workout-card:hover {
+        transform: scale(1.05);
+    }
+    .workout-card h3 {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #e0e0e0; /* Light grey for heading */
+    }
+    .exercises .exercise-item, .rest-day {
+        font-size: 16px;
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #e0e0e0; /* Light grey for exercise text */
+    }
+    .exercises .exercise-item i, .rest-day i {
+        margin-right: 8px;
+        color: #ff6347;
+    }
+    .workout-card:nth-child(odd) {
+        background-color: #555555; /* A different shade of grey for odd cards */
+    }
+    .workout-card:nth-child(even) {
+        background-color: #666666; /* A different shade of grey for even cards */
+    }
+    .no-split-message {
+        color: #ffffff; /* White for no split message */
+        font-size: 20px;
+        margin-top: 20px;
+    }
+    .create-split-btn {
+        background-color: #6A006A;
+        color: white;
+        padding: 10px 20px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    .launch-split-btn {
+        background-color: #6A006A;
+        color: rgb(0, 0, 0);
+        padding: 10px 20px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    .launch-split-btn:hover {
+        background-color: #6A006A;
+        color: white;
+    }
+    .create-split-btn:hover {
+        background-color: #6A006A;
+    }
+</style>
+
+
+<!-- Profile Details -->
+<div class="profile-container">
+    <h1 style="margin-top: 20px">My Profile</h1>
+    <div class="profile-attribute">
+        <span>Name:</span> {{ name }}
+    </div>
+    <div class="profile-attribute">
+        <span>Email:</span> {{ email }}
+    </div>
+    <div class="profile-attribute">
+        <span>Gender:</span> {{ gender }}
+    </div>
+    <div class="profile-attribute">
+        <span>Address:</span> {{ address }}
+    </div>
+    <div class="profile-attribute">
+        <span>Date of Registration:</span> {{ DOR }}
+    </div>
+    <div class="profile-attribute">
+        <span>Goal weight (lbs):</span> {{ goalWeight }}
+        <form action="/profile" method="post">
+            <input type="number" name="newGoalWeight" value="{{ goalWeight }}" required>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+
+    <!-- Workout Split Section -->
+    <div class="workout-split">
+        <h2>Your Workout Split</h2>
+        
+        {% if workout_split is not none %}
+            <div class="workout-cards">
+                {% for day, exercises in workout_split.items() %}
+                    <div class="workout-card">
+                        <h3>{{ day }}</h3>
+                        <div class="exercises">
+                            {% if exercises %}
+                                {% for exercise in exercises %}
+                                    <div class="exercise-item">
+                                        <i class="fas fa-dumbbell"></i> {{ exercise }}
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="rest-day">
+                                    <i class="fas fa-bed"></i> Rest Day
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <form action="/start-split" method="get">
+                <button class="launch-split-btn">Launch my split</button>
+            </form>
+        {% else %}
+            <div class="no-split-message">
+                You don't have a workout split yet.
+            </div>
+            <form action="/splits" method="get">
+                <button class="create-split-btn">Build my split</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

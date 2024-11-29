@@ -1,0 +1,6 @@
+cvzone==1.6.1
+Flask==3.0.3
+moviepy==1.0.3
+numpy==1.24.3
+opencv_contrib_python==4.8.0.74
+opencv_python==4.10.0.84

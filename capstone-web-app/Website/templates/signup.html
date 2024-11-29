@@ -1,0 +1,102 @@
+{% extends "base.html" %} 
+{% block title %}Sign-up{% endblock %}
+{% block content %}
+
+<style>
+    .signup-container {
+        display: flex; /* Create a two-column layout */
+        justify-content: center; /* Center the content horizontally */
+        align-items: center; /* Center the content vertically */
+        min-height: 80vh; /* Adjust height to match the screen */
+    }
+
+    .image-section {
+        flex: 1; /* Allow the image section to take up 50% of the width */
+        text-align: center; /* Center the image */
+        padding: 20px;
+    }
+
+    .image-section img {
+        max-width: 100%; /* Make the image responsive */
+        height: auto;
+        border-radius: 10px; /* Add rounded corners */
+    }
+
+    .form-section {
+        flex: 1; /* Allow the form section to take up 50% of the width */
+        padding: 20px;
+    }
+
+    .form-control {
+        max-width: 400px; /* Adjust the width of input fields */
+        display: block; /* Ensure inputs align vertically */
+    }
+
+    button.btn {
+        max-width: 200px; /* Adjust the button width */
+        margin: 20px auto; /* Center the button */
+    }
+
+    form {
+        text-align: left; /* Center the form contents */
+    }
+</style>
+
+<div class="signup-container">
+
+    <!-- Right Section: Form -->
+    <div class="form-section">
+        <form method="POST">
+            <h3 style="color: #FFFFFF">Welcome, please create your account.</h3>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your Email" />
+            </div>
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" />
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" name="address" placeholder="Enter your current address." />
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select class="form-control" id="gender" name="gender">
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" class="form-control" id="dob" name="dob" placeholder="Enter your date of birth" />
+            </div>
+            <div class="form-group">
+                <label for="height">Height (cm)</label>
+                <input type="number" class="form-control" id="height" name="height" placeholder="Enter your height" />
+            </div>
+            <div class="form-group">
+                <label for="weight">Weight (lbs)</label>
+                <input type="number" class="form-control" id="weight" name="weight" placeholder="Enter your weight" />
+            </div>
+            <div class="form-group">
+                <label for="password1">Password</label>
+                <input type="password" class="form-control" id="passwordTemp" name="passwordTemp" placeholder="Enter your password." />
+            </div>
+            <div class="form-group">
+                <label for="password2">Confirm Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Re-enter your password." />
+            </div>
+            <button type="submit" class="btn btn-primary">Sign up</button>
+        </form>
+    </div>
+
+    <!-- Left Section: Image -->
+    <div class="image-section">
+        <img src="{{ url_for('static', filename='images/magic-dumbbell.png') }}" alt="Sign-up Illustration" />
+    </div>
+</div>
+
+{% endblock %}

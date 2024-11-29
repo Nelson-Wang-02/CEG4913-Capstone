@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="./static/style.css">
+
+<nav class="navbar">
+    <div class="container">
+  
+      <div class="navbar-header">
+        <button class="navbar-toggler" data-toggle="open-navbar1">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <a href="{% if session['userType'] == 'authenticated' %}/home{% else %}/login{% endif %}">
+          <h2 style="color: black; display: inline-block;">
+            Dumbbell<span style="color: white;">Dore</span>
+          </h2>
+        </a>
+      </div>
+      <div class="navbar-menu" id="open-navbar1">
+        <ul class="navbar-nav">
+          <li><a  href="{% if session['userType'] == 'authenticated' %}/home{% else %}/login{% endif %}"><strong>Login</strong></a></li>
+          <li><a  href="{{ url_for('authenticator.sign_up') }}"><strong>Sign Up</strong></a></li>
+          <li><a  href="/logout"><strong>Logout</strong></a></li>
+          <li><a  href="{% if session['userType'] == 'authenticated' %}/search{% else %}/login{% endif %}"><strong>Search</strong></a></li>
+          <li><a  href="{% if session['userType'] == 'authenticated' %}/splits{% else %}/login{% endif %}"><strong>My Split</strong></a></li>
+          <li><a  href="{% if session['userType'] == 'authenticated' %}/profile{% else %}/login{% endif %}"><strong>My Profile</strong></a></li>
+        </ul>
+      </div>
+    </div>
+</nav>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    {% for category, message in messages %}
+        {% if category == 'error' %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% else %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<script src="static/script.js"></script>
